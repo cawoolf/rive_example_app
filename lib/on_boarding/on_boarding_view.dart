@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 import 'package:rive/rive.dart';
+import 'package:rive_example_app/on_boarding/signin_view.dart';
 import 'package:rive_example_app/on_boarding/ui_widgets/main_text.dart';
 import 'package:rive_example_app/on_boarding/ui_widgets/spline_background.dart';
 import 'package:rive_example_app/on_boarding/ui_widgets/start_course_button.dart';
@@ -16,9 +17,10 @@ class OnBoardingView extends StatefulWidget {
   State<OnBoardingView> createState() => _OnBoardingViewState();
 }
 
-class _OnBoardingViewState extends State<OnBoardingView> with TickerProviderStateMixin{
-
+class _OnBoardingViewState extends State<OnBoardingView>
+    with TickerProviderStateMixin {
   AnimationController? _signInAnimController;
+
   // Control touch effect animation for the "Start the Course" button
   late RiveAnimationController _btnController;
 
@@ -69,6 +71,7 @@ class _OnBoardingViewState extends State<OnBoardingView> with TickerProviderStat
                 child: child);
           },
           child: SafeArea(
+            // Causes content to always draw below the "notch" on mobile
             child: Padding(
               padding: const EdgeInsets.fromLTRB(40, 80, 40, 40),
               child: Column(
@@ -142,36 +145,31 @@ class _OnBoardingViewState extends State<OnBoardingView> with TickerProviderStat
                 ],
               );
             },
-            // child: SignInView(
-            //   closeModal: () {
-            //     _signInAnimController?.reverse();
-            //   },
-            child: Container(),
-            ),
+            child: SignInView(
+                // closeModal: () {
+                //   _signInAnimController?.reverse();
+                // },
+                ),
           ),
-        ]),
-      );
+        )
+      ]),
+    );
   }
 
   Text footerText() {
     return Text(
-                  "Purchase includes access to 30+ courses, 240+ premium tutorials, 120+ hours of videos, source files and certificates.",
-                  style: TextStyle(
-                      color: Colors.black.withOpacity(0.7),
-                      fontFamily: "Inter",
-                      fontSize: 13),
-                );
+      "Purchase includes access to 30+ courses, 240+ premium tutorials, 120+ hours of videos, source files and certificates.",
+      style: TextStyle(
+          color: Colors.black.withOpacity(0.7),
+          fontFamily: "Inter",
+          fontSize: 13),
+    );
   }
 
   ImageFiltered backgroundAnimation() {
     return ImageFiltered(
-        imageFilter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
-        child: const RiveAnimation.asset(AssetPaths.shapesRiv),
-      );
+      imageFilter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+      child: const RiveAnimation.asset(AssetPaths.shapesRiv),
+    );
   }
 }
-
-
-
-
-
