@@ -4,10 +4,76 @@ import 'package:rive/rive.dart' as rive;
 import '../app_assets.dart';
 import '../theme.dart';
 
-class SignInView extends StatelessWidget {
-  SignInView({Key? key}) : super(key: key);
+class SignInView extends StatefulWidget {
+  const SignInView({Key? key, this.closeModal}) : super(key: key);
+
+  final Function? closeModal;
+
+  @override
+  State<SignInView> createState() => _SignInViewState();
+}
+
+class _SignInViewState extends State<SignInView> {
+  final _emailController = TextEditingController();
+  final _passController = TextEditingController();
+
+  late rive.SMITrigger _successAnim;
+  late rive.SMITrigger _errorAnim;
+  late rive.SMITrigger _confettiAnim;
 
   bool _isLoading = false;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passController.dispose();
+    super.dispose();
+  }
+
+  void _onCheckRiveInit(rive.Artboard artboard) {
+    final controller =
+    rive.StateMachineController.fromArtboard(artboard, "State Machine 1");
+    artboard.addController(controller!);
+    _successAnim = controller.findInput<bool>("Check") as rive.SMITrigger;
+    _errorAnim = controller.findInput<bool>("Error") as rive.SMITrigger;
+  }
+
+  void _onConfettiRiveInit(rive.Artboard artboard) {
+    final controller =
+    rive.StateMachineController.fromArtboard(artboard, "State Machine 1");
+    artboard.addController(controller!);
+    _confettiAnim =
+    controller.findInput<bool>("Trigger explosion") as rive.SMITrigger;
+  }
+
+  void login() {
+    setState(() {
+      _isLoading = true;
+    });
+
+    bool isEmailValid = _emailController.text.trim().isNotEmpty;
+    bool isPassValid = _passController.text.trim().isNotEmpty;
+    bool isValid = isEmailValid && isPassValid;
+
+    Future.delayed(const Duration(seconds: 1), () {
+      isValid ? _successAnim.fire() : _errorAnim.fire();
+    });
+
+    Future.delayed(const Duration(seconds: 3), () {
+      setState(() {
+        _isLoading = false;
+      });
+      if (isValid) _confettiAnim.fire();
+    });
+
+    if (isValid) {
+      Future.delayed(const Duration(seconds: 4), () {
+        widget.closeModal!();
+        _emailController.text = "";
+        _passController.text = "";
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,8 +140,8 @@ class SignInView extends StatelessWidget {
                         ),
                         const SizedBox(height: 8),
                         TextField(
-                          decoration: null,//authInputStyle("icon_email"),
-                          controller: null,//_emailController,
+                          decoration: authInputStyle("icon_email"),
+                          controller: _emailController,
                         ),
                         const SizedBox(height: 24),
                         const Align(
@@ -91,8 +157,8 @@ class SignInView extends StatelessWidget {
                         const SizedBox(height: 8),
                         TextField(
                           obscureText: true,
-                          decoration: null,//authInputStyle("icon_lock"),
-                          controller: null,//_passController,
+                          decoration: authInputStyle("icon_lock"),
+                          controller: _passController,
                         ),
                         const SizedBox(height: 24),
                         Container(
@@ -129,7 +195,7 @@ class SignInView extends StatelessWidget {
                               ],
                             ),
                             onPressed: () {
-                              // if (!_isLoading) login();
+                              if (!_isLoading) login();
                             },
                           ),
                         ),
@@ -184,7 +250,7 @@ class SignInView extends StatelessWidget {
                             height: 100,
                             child: rive.RiveAnimation.asset(
                               AssetPaths.checkRiv,
-                              onInit: null,//_onCheckRiveInit,
+                              onInit: _onCheckRiveInit,
                             ),
                           ),
                         Positioned.fill(
@@ -195,7 +261,7 @@ class SignInView extends StatelessWidget {
                               scale: 3,
                               child: rive.RiveAnimation.asset(
                                 AssetPaths.confettiRiv,
-                                onInit: null,//_onConfettiRiveInit,
+                                onInit: _onConfettiRiveInit,
                               ),
                             ),
                           ),
@@ -235,7 +301,7 @@ class SignInView extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        //widget.closeModal!();
+                        widget.closeModal!();
                       },
                     ),
                   ),
@@ -248,3 +314,21 @@ class SignInView extends StatelessWidget {
     );
   }
 }
+
+// Common style for Auth Input fields email and password
+InputDecoration authInputStyle(String iconName) {
+  return InputDecoration(
+      filled: true,
+      fillColor: Colors.white,
+      enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: Colors.black.withOpacity(0.1))),
+      focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: Colors.black.withOpacity(0.1))),
+      contentPadding: const EdgeInsets.all(15),
+      prefixIcon: Padding(
+          padding: const EdgeInsets.only(left: 4),
+          child: Image.asset("samples/ui/rive_app/images/$iconName.png")));
+}
+
