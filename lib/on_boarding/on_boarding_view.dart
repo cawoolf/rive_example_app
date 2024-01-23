@@ -41,6 +41,7 @@ class _OnBoardingViewState extends State<OnBoardingView>
 
     // Controllers the animation that displays the SignInView
     // The model is actually ahove the screen, and slides down into view.
+    // The the SignInButton is clicked, the OneShotAnimation is set to true, which triggers the code below.
     _btnController.isActiveChanged.addListener(() {
       if (!_btnController.isActive) {
         final springAnim = SpringSimulation(springDesc, 0, 1, 0);
@@ -64,7 +65,7 @@ class _OnBoardingViewState extends State<OnBoardingView>
         splineBackground(),
         backgroundAnimation(),
         bodyContent(),
-        signInButton()
+        signInModel()
       ]),
     );
   }
@@ -160,7 +161,7 @@ class _OnBoardingViewState extends State<OnBoardingView>
     );
   }
 
-  RepaintBoundary signInButton() {
+  RepaintBoundary signInModel() {
     return RepaintBoundary( // At 0:50min in video. Used to improve performance when redrawing widgets. Use with care. Resource intensive. See docs.
         child: AnimatedBuilder(
           animation: _signInAnimController!,

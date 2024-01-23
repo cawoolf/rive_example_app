@@ -32,7 +32,7 @@ class _SignInViewState extends State<SignInView> {
 
   void _onCheckRiveInit(rive.Artboard artboard) {
     final controller =
-    rive.StateMachineController.fromArtboard(artboard, "State Machine 1");
+        rive.StateMachineController.fromArtboard(artboard, "State Machine 1");
     artboard.addController(controller!);
     _successAnim = controller.findInput<bool>("Check") as rive.SMITrigger;
     _errorAnim = controller.findInput<bool>("Error") as rive.SMITrigger;
@@ -40,10 +40,10 @@ class _SignInViewState extends State<SignInView> {
 
   void _onConfettiRiveInit(rive.Artboard artboard) {
     final controller =
-    rive.StateMachineController.fromArtboard(artboard, "State Machine 1");
+        rive.StateMachineController.fromArtboard(artboard, "State Machine 1");
     artboard.addController(controller!);
     _confettiAnim =
-    controller.findInput<bool>("Trigger explosion") as rive.SMITrigger;
+        controller.findInput<bool>("Trigger explosion") as rive.SMITrigger;
   }
 
   void login() {
@@ -206,7 +206,7 @@ class _SignInViewState extends State<SignInView> {
                               const Expanded(child: Divider()),
                               Padding(
                                 padding:
-                                const EdgeInsets.symmetric(horizontal: 8),
+                                    const EdgeInsets.symmetric(horizontal: 8),
                                 child: Text(
                                   "OR",
                                   style: TextStyle(
@@ -237,78 +237,84 @@ class _SignInViewState extends State<SignInView> {
                     ),
                   ),
                 ),
-
-                Positioned.fill(
-                  child: IgnorePointer(
-                    ignoring: true,
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        if (_isLoading)
-                          SizedBox(
-                            width: 100,
-                            height: 100,
-                            child: rive.RiveAnimation.asset(
-                              AssetPaths.checkRiv,
-                              onInit: _onCheckRiveInit,
-                            ),
-                          ),
-                        Positioned.fill(
-                          child: SizedBox(
-                            width: 500,
-                            height: 500,
-                            child: Transform.scale(
-                              scale: 3,
-                              child: rive.RiveAnimation.asset(
-                                AssetPaths.confettiRiv,
-                                onInit: _onConfettiRiveInit,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: CupertinoButton(
-                      padding: EdgeInsets.zero,
-                      borderRadius: BorderRadius.circular(36 / 2),
-                      minSize: 36,
-                      child: Container(
-                        width: 36,
-                        height: 36,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(36 / 2),
-                          boxShadow: [
-                            BoxShadow(
-                              color: RiveAppTheme.shadow.withOpacity(0.3),
-                              blurRadius: 5,
-                              offset: const Offset(0, 3),
-                            )
-                          ],
-                        ),
-                        child: const Icon(
-                          Icons.close,
-                          color: Colors.black,
-                        ),
-                      ),
-                      onPressed: () {
-                        widget.closeModal!();
-                      },
-                    ),
-                  ),
-                )
+                successAnimation(),
+                closeIcon()
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Positioned successAnimation() {
+    return Positioned.fill(
+      child: IgnorePointer(
+        ignoring: true,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            if (_isLoading)
+              SizedBox(
+                width: 100,
+                height: 100,
+                child: rive.RiveAnimation.asset(
+                  AssetPaths.checkRiv,
+                  onInit: _onCheckRiveInit,
+                ),
+              ),
+            Positioned.fill(
+              child: SizedBox(
+                width: 500,
+                height: 500,
+                child: Transform.scale(
+                  scale: 3,
+                  child: rive.RiveAnimation.asset(
+                    AssetPaths.confettiRiv,
+                    onInit: _onConfettiRiveInit,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Positioned closeIcon() {
+    return Positioned(
+      bottom: 0,
+      left: 0,
+      right: 0,
+      child: Align(
+        alignment: Alignment.center,
+        child: CupertinoButton(
+          padding: EdgeInsets.zero,
+          borderRadius: BorderRadius.circular(36 / 2),
+          minSize: 36,
+          child: Container(
+            width: 36,
+            height: 36,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(36 / 2),
+              boxShadow: [
+                BoxShadow(
+                  color: RiveAppTheme.shadow.withOpacity(0.3),
+                  blurRadius: 5,
+                  offset: const Offset(0, 3),
+                )
+              ],
+            ),
+            child: const Icon(
+              Icons.close,
+              color: Colors.black,
+            ),
+          ),
+          onPressed: () {
+            widget.closeModal!();
+          },
         ),
       ),
     );
@@ -331,4 +337,3 @@ InputDecoration authInputStyle(String iconName) {
           padding: const EdgeInsets.only(left: 4),
           child: Image.asset("samples/ui/rive_app/images/$iconName.png")));
 }
-
