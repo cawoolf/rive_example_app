@@ -88,7 +88,7 @@ class _VCardState extends State<VCard> {
                       key: Key(index.toString()),
                       borderRadius: BorderRadius.circular(22),
                       child: Image.asset(
-                          "assets/samples/ui/rive_app/images/avatars/avatar_${avatars[index]}.jpg",
+                          "samples/ui/rive_app/images/avatars/avatar_${avatars[index]}.jpg",
                           width: 44,
                           height: 44),
                     ),
