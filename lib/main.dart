@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rive_example_app/home.dart';
 import 'on_boarding/on_boarding_view.dart';
 
 void main() {
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const OnBoardingView(),
+      home: const RiveAppHome(),
     );
   }
 }

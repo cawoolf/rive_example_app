@@ -6,11 +6,12 @@ import 'package:rive/rive.dart';
 import 'package:rive_example_app/on_boarding/signin_view.dart';
 import '../theme.dart';
 import 'package:rive_example_app/app_assets.dart';
-
 import '../ui_widgets/start_course_button.dart';
 
 class OnBoardingView extends StatefulWidget {
-  const OnBoardingView({Key? key}) : super(key: key);
+  const OnBoardingView({Key? key, this.closeModal}) : super(key: key);
+
+  final Function? closeModal;
 
   @override
   State<OnBoardingView> createState() => _OnBoardingViewState();
@@ -195,7 +196,7 @@ class _OnBoardingViewState extends State<OnBoardingView>
                           ),
                         ),
                         onPressed: () {
-                          // widget.closeModal!();
+                          widget.closeModal!();
                         },
                       ),
                     )),
