@@ -161,7 +161,7 @@ class _RiveAppHomeState extends State<RiveAppHome>
             child: child,
           );
         },
-        child: Stack(
+        child: Stack( // This is the child passed to the builder(context, child) argument
           alignment: Alignment.center,
           children: [
             CustomTabBar(
