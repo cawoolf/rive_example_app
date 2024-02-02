@@ -69,57 +69,61 @@ class _CustomTabBarState extends State<CustomTabBar> {
               )
             ],
           ),
-          child: Row(
+          child: Row( //Row containing the TabItems
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: List.generate(_icons.length, (index) {
               TabItem icon = _icons[index];
 
-              return Expanded(
-                key: icon.id,
-                child: CupertinoButton(
-                  padding: const EdgeInsets.all(12),
-                  child: AnimatedOpacity(
-                    opacity: _selectedTab == index ? 1 : 0.5,
-                    duration: const Duration(milliseconds: 200),
-                    child: Stack(
-                        clipBehavior: Clip.none,
-                        alignment: Alignment.center,
-                        children: [
-                          Positioned(
-                            top: -4,
-                            child: AnimatedContainer(
-                              duration: const Duration(milliseconds: 200),
-                              height: 4,
-                              width: _selectedTab == index ? 20 : 0,
-                              decoration: BoxDecoration(
-                                color: RiveAppTheme.accentColor,
-                                borderRadius: BorderRadius.circular(2),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 36,
-                            width: 36,
-                            child: RiveAnimation.asset(
-                              AssetPaths.iconsRiv,
-                              stateMachines: [icon.stateMachine],
-                              artboard: icon.artboard,
-                              onInit: (artboard) {
-                                _onRiveIconInit(artboard, index);
-                              },
-                            ),
-                          )
-                        ]),
-                  ),
-                  onPressed: () {
-                    onTabPress(index);
-                  },
-                ),
-              );
+              return _buildTabItemIcon(icon, index);
             }),
           ),
         ),
       ),
     );
+  }
+
+  Expanded _buildTabItemIcon(TabItem icon, int index) {
+    return Expanded(
+              key: icon.id,
+              child: CupertinoButton(
+                padding: const EdgeInsets.all(12),
+                child: AnimatedOpacity(
+                  opacity: _selectedTab == index ? 1 : 0.5,
+                  duration: const Duration(milliseconds: 200),
+                  child: Stack(
+                      clipBehavior: Clip.none,
+                      alignment: Alignment.center,
+                      children: [
+                        Positioned(
+                          top: -4,
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 200),
+                            height: 4,
+                            width: _selectedTab == index ? 20 : 0,
+                            decoration: BoxDecoration(
+                              color: RiveAppTheme.accentColor,
+                              borderRadius: BorderRadius.circular(2),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 36,
+                          width: 36,
+                          child: RiveAnimation.asset(
+                            AssetPaths.iconsRiv,
+                            stateMachines: [icon.stateMachine],
+                            artboard: icon.artboard,
+                            onInit: (artboard) {
+                              _onRiveIconInit(artboard, index);
+                            },
+                          ),
+                        )
+                      ]),
+                ),
+                onPressed: () {
+                  onTabPress(index);
+                },
+              ),
+            );
   }
 }
