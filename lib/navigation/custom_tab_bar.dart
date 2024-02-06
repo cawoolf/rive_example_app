@@ -44,7 +44,7 @@ class _CustomTabBarState extends State<CustomTabBar> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Container(
+      child: Container( // Not sure what this does, but it's just a formatting/Decoration for the row of TabItems
         margin: const EdgeInsets.fromLTRB(24, 0, 24, 8),
         padding: const EdgeInsets.all(1),
         constraints: const BoxConstraints(maxWidth: 768),
